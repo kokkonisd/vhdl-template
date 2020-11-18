@@ -54,7 +54,9 @@ all: builddir $(TARGETS)
 	$(GHDL) -e --workdir=$(BUILD) -o $(BUILD)/$@_tb $@_tb
 
 	@echo "\033[0;33m[Running simulation of \`$@_tb\` ...]\033[0m"
-	@./$(BUILD)/$@_tb --vcd=$(SIMU)/$@.vcd --assert-level=$(ASSERTLVL) --stop-time=$(SIMTIME) && \
+# Some versions of GHDL produce executables (in $(BUILD)/) and some do not, hence the first two parts of this command
+	@./$(BUILD)/$@_tb --vcd=$(SIMU)/$@.vcd --assert-level=$(ASSERTLVL) --stop-time=$(SIMTIME) 2> /dev/null || \
+	$(GHDL) -r --workdir=$(BUILD) $@_tb --vcd=$(SIMU)/$@.vcd --assert-level=$(ASSERTLVL) --stop-time=$(SIMTIME) && \
 		echo "\033[0;32m[\`$@\` PASS]\033[0m" || (echo "\033[0;31m[\`$@\` FAIL]\033[0m"; exit $(ERROREXIT))
 
 

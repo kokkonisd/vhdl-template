@@ -42,13 +42,18 @@ $ sudo apt install -y gtkwave
 
 This installation is simpler using [Homebrew](https://brew.sh/).
 
-Some dependencies need to be installed for GHDL:
+First, GNAT is needed, which can be downloaded from [here](https://www.adacore.com/download).
 
-```text
-$ brew install git make gnat zlib1g-dev
+Once the GNAT toolchain is installed, it must be put into the `PATH`, by adding the following line to your
+`.bashrc`/`.zshrc`:
+
+```bash
+# Note: this is the current install path of GNAT, check the installation program in the previous step if you're not
+# sure exactly where the GNAT toolchain was installed
+export PATH=$HOME/opt/GNAT/2020/bin:$PATH
 ```
 
-Then, GHDL needs to be built from source:
+GHDL needs to be built from source:
 
 ```text
 $ git clone https://github.com/ghdl/ghdl

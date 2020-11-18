@@ -19,6 +19,8 @@ SRC = src
 TB = tb
 # Simulation file directory
 SIMU = simu
+# Directory containing all build files
+BUILD = build
 
 # Set error exit code according to the DEBUG flag
 # Set maximum tolerance assertion level (errors will be triggered for this error type & above)
@@ -37,26 +39,30 @@ TARGETS = $(patsubst $(SRC)/%.vhdl, %, $(SOURCES))
 SIMULATIONS = $(wildcard $(SIMU)/*.vcd)
 
 
-all: $(TARGETS)
+all: builddir $(TARGETS)
 
 
 # IP with test bench
 %: $(SRC)/%.vhdl $(TB)/%_tb.vhdl
 	@echo "\033[0;33m[Compiling \`$@.vhdl\` & \`$@_tb.vhdl\` ...]\033[0m"
-	$(GHDL) -s $(SRC)/$@.vhdl $(TB)/$@_tb.vhdl
-	$(GHDL) -a $(SRC)/$@.vhdl $(TB)/$@_tb.vhdl
-	$(GHDL) -e $@_tb
+	$(GHDL) -s --workdir=$(BUILD) $(SRC)/$@.vhdl $(TB)/$@_tb.vhdl
+	$(GHDL) -a --workdir=$(BUILD) $(SRC)/$@.vhdl $(TB)/$@_tb.vhdl
+	$(GHDL) -e --workdir=$(BUILD) -o $(BUILD)/$@_tb $@_tb
 
 	@echo "\033[0;33m[Running simulation of \`$@_tb\` ...]\033[0m"
-	@$(GHDL) -r $@_tb --vcd=$(SIMU)/$@.vcd --assert-level=$(ASSERTLVL) --stop-time=$(SIMTIME) && \
+	@./$(BUILD)/$@_tb --vcd=$(SIMU)/$@.vcd --assert-level=$(ASSERTLVL) --stop-time=$(SIMTIME) && \
 		echo "\033[0;32m[\`$@\` PASS]\033[0m" || (echo "\033[0;31m[\`$@\` FAIL]\033[0m"; exit $(ERROREXIT))
 
 
 # IP without test bench
 %: $(SRC)/%.vhdl
 	@echo "\033[0;33m[Compiling \`$@.vhdl\` ...]\033[0m"
-	$(GHDL) -s $(SRC)/$@.vhdl
-	$(GHDL) -a $(SRC)/$@.vhdl
+	$(GHDL) -s --workdir=$(BUILD) $(SRC)/$@.vhdl
+	$(GHDL) -a --workdir=$(BUILD) $(SRC)/$@.vhdl
+
+
+builddir:
+	@mkdir -p $(BUILD)/
 
 
 simu:
@@ -64,8 +70,7 @@ simu:
 
 
 clean:
-	$(GHDL) --remove
-	rm -rf $(SIMU)/*.vcd
+	rm -rf $(BUILD)/ $(SIMU)/*.vcd
 
 
-.PHONY: all simu clean
+.PHONY: all builddir simu clean

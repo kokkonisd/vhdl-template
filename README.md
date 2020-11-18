@@ -4,9 +4,9 @@ A Makefile-based template for open-source VHDL projects, using [GHDL](http://ghd
 [GTKWave](http://gtkwave.sourceforge.net/).
 
 
-# How to install
+## How to install
 
-## Linux
+### Linux
 
 Some dependencies need to be installed for GHDL:
 
@@ -38,7 +38,7 @@ $ sudo apt install -y gtkwave
 ```
 
 
-## macOS
+### macOS
 
 This installation is simpler using [Homebrew](https://brew.sh/).
 
@@ -76,7 +76,7 @@ $ brew install gtkwave
 ```
 
 
-# How to use
+## How to use
 
 I've written a [short blogpost](https://kokkonisd.github.io/2020/11/18/vhdl-project-template/) on how to use this
 template, with a concrete example project.

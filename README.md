@@ -78,4 +78,5 @@ $ brew install gtkwave
 
 # How to use
 
-TODO
+I've written a [short blogpost](https://kokkonisd.github.io/2020/11/18/vhdl-project-template/) on how to use this
+template, with a concrete example project.

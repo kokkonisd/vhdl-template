@@ -42,6 +42,10 @@ SIMULATIONS = $(wildcard $(SIMU)/*.vcd)
 all: builddir $(TARGETS)
 
 
+# Dependencies
+# <my entity>: <my other entity>
+
+
 # IP with test bench
 %: $(SRC)/%.vhdl $(TB)/%_tb.vhdl
 	@echo "\033[0;33m[Compiling \`$@.vhdl\` & \`$@_tb.vhdl\` ...]\033[0m"

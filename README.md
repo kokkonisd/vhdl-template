@@ -69,7 +69,7 @@ It should now be installed; you can test with:
 $ ghdl -v
 ```
 
-GTKWave should be installable via `apt`:
+GTKWave should be installable via Homebrew:
 
 ```text
 $ brew install gtkwave
